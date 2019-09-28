@@ -31,10 +31,10 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
-//@TypeDef(
-//		name = "jsonb",
-//		typeClass = JsonBinaryType.class
-//)
+@TypeDef(
+		name = "jsonb",
+		typeClass = JsonBinaryType.class
+)
 public class DataSet {
 
 	private @Id @GeneratedValue Long id;
@@ -42,9 +42,9 @@ public class DataSet {
 	private Integer age;
 	private String diagnosis;
 
-//	@Type(type = "jsonb")
-//	@Column(columnDefinition = "jsonb")
-//	private String properties;
+	@Type(type = "jsonb")
+	@Column(columnDefinition = "jsonb")
+	private String properties;
 
 	private @Version @JsonIgnore Long version;
 
@@ -54,11 +54,11 @@ public class DataSet {
 		this.diagnosis = diagnosis;
 	}
 
-//	public DataSet(String firstName, Integer lastName, String diagnosis, String properties) {
-//		this.name = firstName;
-//		this.age = lastName;
-//		this.diagnosis = diagnosis;
-//		this.properties = properties;
-//	}
+	public DataSet(String firstName, Integer lastName, String diagnosis, String properties) {
+		this.name = firstName;
+		this.age = lastName;
+		this.diagnosis = diagnosis;
+		this.properties = properties;
+	}
 }
 // end::code[]
