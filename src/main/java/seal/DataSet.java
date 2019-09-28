@@ -17,6 +17,7 @@ package seal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,7 @@ import javax.persistence.Version;
 // tag::code[]
 @Entity
 @Data
+@NoArgsConstructor
 public class DataSet {
 
 	private @Id @GeneratedValue Long id;

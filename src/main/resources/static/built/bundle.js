@@ -44724,7 +44724,7 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
-      employees: [],
+      dataSets: [],
       attributes: [],
       page: 1,
       pageSize: 2,
@@ -44746,36 +44746,36 @@ function (_React$Component) {
       var _this2 = this;
 
       follow(client, root, [{
-        rel: 'employees',
+        rel: 'dataSets',
         params: {
           size: pageSize
         }
-      }]).then(function (employeeCollection) {
+      }]).then(function (dataSetCollection) {
         return client({
           method: 'GET',
-          path: employeeCollection.entity._links.profile.href,
+          path: dataSetCollection.entity._links.profile.href,
           headers: {
             'Accept': 'application/schema+json'
           }
         }).then(function (schema) {
           _this2.schema = schema.entity;
-          _this2.links = employeeCollection.entity._links;
-          return employeeCollection;
+          _this2.links = dataSetCollection.entity._links;
+          return dataSetCollection;
         });
-      }).then(function (employeeCollection) {
-        _this2.page = employeeCollection.entity.page;
-        return employeeCollection.entity._embedded.employees.map(function (employee) {
+      }).then(function (dataSetCollection) {
+        _this2.page = dataSetCollection.entity.page;
+        return dataSetCollection.entity._embedded.dataSets.map(function (dataSet) {
           return client({
             method: 'GET',
-            path: employee._links.self.href
+            path: dataSet._links.self.href
           });
         });
-      }).then(function (employeePromises) {
-        return when.all(employeePromises);
-      }).done(function (employees) {
+      }).then(function (dataSetPromises) {
+        return when.all(dataSetPromises);
+      }).done(function (dataSets) {
         _this2.setState({
           page: _this2.page,
-          employees: employees,
+          dataSets: dataSets,
           attributes: Object.keys(_this2.schema.properties),
           pageSize: pageSize,
           links: _this2.links
@@ -44785,12 +44785,12 @@ function (_React$Component) {
 
   }, {
     key: "onCreate",
-    value: function onCreate(newEmployee) {
-      follow(client, root, ['employees']).done(function (response) {
+    value: function onCreate(newDataSet) {
+      follow(client, root, ['dataSets']).done(function (response) {
         client({
           method: 'POST',
           path: response.entity._links.self.href,
-          entity: newEmployee,
+          entity: newDataSet,
           headers: {
             'Content-Type': 'application/json'
           }
@@ -44800,29 +44800,29 @@ function (_React$Component) {
 
   }, {
     key: "onUpdate",
-    value: function onUpdate(employee, updatedEmployee) {
+    value: function onUpdate(dataSet, updatedDataSet) {
       client({
         method: 'PUT',
-        path: employee.entity._links.self.href,
-        entity: updatedEmployee,
+        path: dataSet.entity._links.self.href,
+        entity: updatedDataSet,
         headers: {
           'Content-Type': 'application/json',
-          'If-Match': employee.headers.Etag
+          'If-Match': dataSet.headers.Etag
         }
       }).done(function (response) {
         /* Let the websocket handler update the state */
       }, function (response) {
         if (response.status.code === 412) {
-          alert('DENIED: Unable to update ' + employee.entity._links.self.href + '. Your copy is stale.');
+          alert('DENIED: Unable to update ' + dataSet.entity._links.self.href + '. Your copy is stale.');
         }
       });
     }
   }, {
     key: "onDelete",
-    value: function onDelete(employee) {
+    value: function onDelete(dataSet) {
       client({
         method: 'DELETE',
-        path: employee.entity._links.self.href
+        path: dataSet.entity._links.self.href
       });
     }
   }, {
@@ -44833,21 +44833,21 @@ function (_React$Component) {
       client({
         method: 'GET',
         path: navUri
-      }).then(function (employeeCollection) {
-        _this3.links = employeeCollection.entity._links;
-        _this3.page = employeeCollection.entity.page;
-        return employeeCollection.entity._embedded.employees.map(function (employee) {
+      }).then(function (dataSetCollection) {
+        _this3.links = dataSetCollection.entity._links;
+        _this3.page = dataSetCollection.entity.page;
+        return dataSetCollection.entity._embedded.dataSets.map(function (dataSet) {
           return client({
             method: 'GET',
-            path: employee._links.self.href
+            path: dataSet._links.self.href
           });
         });
-      }).then(function (employeePromises) {
-        return when.all(employeePromises);
-      }).done(function (employees) {
+      }).then(function (dataSetPromises) {
+        return when.all(dataSetPromises);
+      }).done(function (dataSets) {
         _this3.setState({
           page: _this3.page,
-          employees: employees,
+          dataSets: dataSets,
           attributes: Object.keys(_this3.schema.properties),
           pageSize: _this3.state.pageSize,
           links: _this3.links
@@ -44868,7 +44868,7 @@ function (_React$Component) {
       var _this4 = this;
 
       follow(client, root, [{
-        rel: 'employees',
+        rel: 'dataSets',
         params: {
           size: this.state.pageSize
         }
@@ -44886,26 +44886,26 @@ function (_React$Component) {
       var _this5 = this;
 
       follow(client, root, [{
-        rel: 'employees',
+        rel: 'dataSets',
         params: {
           size: this.state.pageSize,
           page: this.state.page.number
         }
-      }]).then(function (employeeCollection) {
-        _this5.links = employeeCollection.entity._links;
-        _this5.page = employeeCollection.entity.page;
-        return employeeCollection.entity._embedded.employees.map(function (employee) {
+      }]).then(function (dataSetCollection) {
+        _this5.links = dataSetCollection.entity._links;
+        _this5.page = dataSetCollection.entity.page;
+        return dataSetCollection.entity._embedded.dataSets.map(function (dataSet) {
           return client({
             method: 'GET',
-            path: employee._links.self.href
+            path: dataSet._links.self.href
           });
         });
-      }).then(function (employeePromises) {
-        return when.all(employeePromises);
-      }).then(function (employees) {
+      }).then(function (dataSetPromises) {
+        return when.all(dataSetPromises);
+      }).then(function (dataSets) {
         _this5.setState({
           page: _this5.page,
-          employees: employees,
+          dataSets: dataSets,
           attributes: Object.keys(_this5.schema.properties),
           pageSize: _this5.state.pageSize,
           links: _this5.links
@@ -44919,13 +44919,13 @@ function (_React$Component) {
     value: function componentDidMount() {
       this.loadFromServer(this.state.pageSize);
       stompClient.register([{
-        route: '/topic/newEmployee',
+        route: '/topic/newDataSet',
         callback: this.refreshAndGoToLastPage
       }, {
-        route: '/topic/updateEmployee',
+        route: '/topic/updateDataSet',
         callback: this.refreshCurrentPage
       }, {
-        route: '/topic/deleteEmployee',
+        route: '/topic/deleteDataSet',
         callback: this.refreshCurrentPage
       }]);
     } // end::register-handlers[]
@@ -44936,9 +44936,9 @@ function (_React$Component) {
       return React.createElement("div", null, React.createElement(CreateDialog, {
         attributes: this.state.attributes,
         onCreate: this.onCreate
-      }), React.createElement(EmployeeList, {
+      }), React.createElement(DataSetList, {
         page: this.state.page,
-        employees: this.state.employees,
+        dataSets: this.state.dataSets,
         links: this.state.links,
         pageSize: this.state.pageSize,
         attributes: this.state.attributes,
@@ -44974,11 +44974,11 @@ function (_React$Component2) {
       var _this7 = this;
 
       e.preventDefault();
-      var newEmployee = {};
+      var newDataSet = {};
       this.props.attributes.forEach(function (attribute) {
-        newEmployee[attribute] = ReactDOM.findDOMNode(_this7.refs[attribute]).value.trim();
+        newDataSet[attribute] = ReactDOM.findDOMNode(_this7.refs[attribute]).value.trim();
       });
-      this.props.onCreate(newEmployee);
+      this.props.onCreate(newDataSet);
       this.props.attributes.forEach(function (attribute) {
         ReactDOM.findDOMNode(_this7.refs[attribute]).value = ''; // clear out the dialog's inputs
       });
@@ -44998,15 +44998,15 @@ function (_React$Component2) {
         }));
       });
       return React.createElement("div", null, React.createElement("a", {
-        href: "#createEmployee"
+        href: "#createDataSet"
       }, "Create"), React.createElement("div", {
-        id: "createEmployee",
+        id: "createDataSet",
         className: "modalDialog"
       }, React.createElement("div", null, React.createElement("a", {
         href: "#",
         title: "Close",
         className: "close"
-      }, "X"), React.createElement("h2", null, "Create new employee"), React.createElement("form", null, inputs, React.createElement("button", {
+      }, "X"), React.createElement("h2", null, "Create new dataSet"), React.createElement("form", null, inputs, React.createElement("button", {
         onClick: this.handleSubmit
       }, "Create")))));
     }
@@ -45036,11 +45036,11 @@ function (_React$Component3) {
       var _this9 = this;
 
       e.preventDefault();
-      var updatedEmployee = {};
+      var updatedDataSet = {};
       this.props.attributes.forEach(function (attribute) {
-        updatedEmployee[attribute] = ReactDOM.findDOMNode(_this9.refs[attribute]).value.trim();
+        updatedDataSet[attribute] = ReactDOM.findDOMNode(_this9.refs[attribute]).value.trim();
       });
-      this.props.onUpdate(this.props.employee, updatedEmployee);
+      this.props.onUpdate(this.props.dataSet, updatedDataSet);
       window.location = "#";
     }
   }, {
@@ -45050,16 +45050,16 @@ function (_React$Component3) {
 
       var inputs = this.props.attributes.map(function (attribute) {
         return React.createElement("p", {
-          key: _this10.props.employee.entity[attribute]
+          key: _this10.props.dataSet.entity[attribute]
         }, React.createElement("input", {
           type: "text",
           placeholder: attribute,
-          defaultValue: _this10.props.employee.entity[attribute],
+          defaultValue: _this10.props.dataSet.entity[attribute],
           ref: attribute,
           className: "field"
         }));
       });
-      var dialogId = "updateEmployee-" + this.props.employee.entity._links.self.href;
+      var dialogId = "updateDataSet-" + this.props.dataSet.entity._links.self.href;
       return React.createElement("div", null, React.createElement("a", {
         href: "#" + dialogId
       }, "Update"), React.createElement("div", {
@@ -45069,7 +45069,7 @@ function (_React$Component3) {
         href: "#",
         title: "Close",
         className: "close"
-      }, "X"), React.createElement("h2", null, "Update an employee"), React.createElement("form", null, inputs, React.createElement("button", {
+      }, "X"), React.createElement("h2", null, "Update a dataSet"), React.createElement("form", null, inputs, React.createElement("button", {
         onClick: this.handleSubmit
       }, "Update")))));
     }
@@ -45078,17 +45078,17 @@ function (_React$Component3) {
   return UpdateDialog;
 }(React.Component);
 
-var EmployeeList =
+var DataSetList =
 /*#__PURE__*/
 function (_React$Component4) {
-  _inherits(EmployeeList, _React$Component4);
+  _inherits(DataSetList, _React$Component4);
 
-  function EmployeeList(props) {
+  function DataSetList(props) {
     var _this11;
 
-    _classCallCheck(this, EmployeeList);
+    _classCallCheck(this, DataSetList);
 
-    _this11 = _possibleConstructorReturn(this, _getPrototypeOf(EmployeeList).call(this, props));
+    _this11 = _possibleConstructorReturn(this, _getPrototypeOf(DataSetList).call(this, props));
     _this11.handleNavFirst = _this11.handleNavFirst.bind(_assertThisInitialized(_this11));
     _this11.handleNavPrev = _this11.handleNavPrev.bind(_assertThisInitialized(_this11));
     _this11.handleNavNext = _this11.handleNavNext.bind(_assertThisInitialized(_this11));
@@ -45097,7 +45097,7 @@ function (_React$Component4) {
     return _this11;
   }
 
-  _createClass(EmployeeList, [{
+  _createClass(DataSetList, [{
     key: "handleInput",
     value: function handleInput(e) {
       e.preventDefault();
@@ -45138,11 +45138,11 @@ function (_React$Component4) {
     value: function render() {
       var _this12 = this;
 
-      var pageInfo = this.props.page.hasOwnProperty("number") ? React.createElement("h3", null, "Employees - Page ", this.props.page.number + 1, " of ", this.props.page.totalPages) : null;
-      var employees = this.props.employees.map(function (employee) {
-        return React.createElement(Employee, {
-          key: employee.entity._links.self.href,
-          employee: employee,
+      var pageInfo = this.props.page.hasOwnProperty("number") ? React.createElement("h3", null, "dataSets - Page ", this.props.page.number + 1, " of ", this.props.page.totalPages) : null;
+      var dataSets = this.props.dataSets.map(function (dataSet) {
+        return React.createElement(DataSet, {
+          key: dataSet.entity._links.self.href,
+          dataSet: dataSet,
           attributes: _this12.props.attributes,
           onUpdate: _this12.props.onUpdate,
           onDelete: _this12.props.onDelete
@@ -45182,38 +45182,38 @@ function (_React$Component4) {
         ref: "pageSize",
         defaultValue: this.props.pageSize,
         onInput: this.handleInput
-      }), React.createElement("table", null, React.createElement("tbody", null, React.createElement("tr", null, React.createElement("th", null, "First Name"), React.createElement("th", null, "Last Name"), React.createElement("th", null, "Description"), React.createElement("th", null), React.createElement("th", null)), employees)), React.createElement("div", null, navLinks));
+      }), React.createElement("table", null, React.createElement("tbody", null, React.createElement("tr", null, React.createElement("th", null, "Name"), React.createElement("th", null, "Age"), React.createElement("th", null, "Diagnosis"), React.createElement("th", null), React.createElement("th", null)), dataSets)), React.createElement("div", null, navLinks));
     }
   }]);
 
-  return EmployeeList;
+  return DataSetList;
 }(React.Component);
 
-var Employee =
+var DataSet =
 /*#__PURE__*/
 function (_React$Component5) {
-  _inherits(Employee, _React$Component5);
+  _inherits(DataSet, _React$Component5);
 
-  function Employee(props) {
+  function DataSet(props) {
     var _this13;
 
-    _classCallCheck(this, Employee);
+    _classCallCheck(this, DataSet);
 
-    _this13 = _possibleConstructorReturn(this, _getPrototypeOf(Employee).call(this, props));
+    _this13 = _possibleConstructorReturn(this, _getPrototypeOf(DataSet).call(this, props));
     _this13.handleDelete = _this13.handleDelete.bind(_assertThisInitialized(_this13));
     return _this13;
   }
 
-  _createClass(Employee, [{
+  _createClass(DataSet, [{
     key: "handleDelete",
     value: function handleDelete() {
-      this.props.onDelete(this.props.employee);
+      this.props.onDelete(this.props.dataSet);
     }
   }, {
     key: "render",
     value: function render() {
-      return React.createElement("tr", null, React.createElement("td", null, this.props.employee.entity.firstName), React.createElement("td", null, this.props.employee.entity.lastName), React.createElement("td", null, this.props.employee.entity.description), React.createElement("td", null, React.createElement(UpdateDialog, {
-        employee: this.props.employee,
+      return React.createElement("tr", null, React.createElement("td", null, this.props.dataSet.entity.name), React.createElement("td", null, this.props.dataSet.entity.age), React.createElement("td", null, this.props.dataSet.entity.diagnosis), React.createElement("td", null, React.createElement(UpdateDialog, {
+        dataSet: this.props.dataSet,
         attributes: this.props.attributes,
         onUpdate: this.props.onUpdate
       })), React.createElement("td", null, React.createElement("button", {
@@ -45222,7 +45222,7 @@ function (_React$Component5) {
     }
   }]);
 
-  return Employee;
+  return DataSet;
 }(React.Component);
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('react'));

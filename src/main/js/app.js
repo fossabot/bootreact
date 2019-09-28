@@ -15,7 +15,7 @@ class App extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {employees: [], attributes: [], page: 1, pageSize: 2, links: {}};
+		this.state = {dataSets: [], attributes: [], page: 1, pageSize: 2, links: {}};
 		this.updatePageSize = this.updatePageSize.bind(this);
 		this.onCreate = this.onCreate.bind(this);
 		this.onUpdate = this.onUpdate.bind(this);
@@ -27,31 +27,31 @@ class App extends React.Component {
 
 	loadFromServer(pageSize) {
 		follow(client, root, [
-				{rel: 'employees', params: {size: pageSize}}]
-		).then(employeeCollection => {
+				{rel: 'dataSets', params: {size: pageSize}}]
+		).then(dataSetCollection => {
 				return client({
 					method: 'GET',
-					path: employeeCollection.entity._links.profile.href,
+					path: dataSetCollection.entity._links.profile.href,
 					headers: {'Accept': 'application/schema+json'}
 				}).then(schema => {
 					this.schema = schema.entity;
-					this.links = employeeCollection.entity._links;
-					return employeeCollection;
+					this.links = dataSetCollection.entity._links;
+					return dataSetCollection;
 				});
-		}).then(employeeCollection => {
-			this.page = employeeCollection.entity.page;
-			return employeeCollection.entity._embedded.employees.map(employee =>
+		}).then(dataSetCollection => {
+			this.page = dataSetCollection.entity.page;
+			return dataSetCollection.entity._embedded.dataSets.map(dataSet =>
 					client({
 						method: 'GET',
-						path: employee._links.self.href
+						path: dataSet._links.self.href
 					})
 			);
-		}).then(employeePromises => {
-			return when.all(employeePromises);
-		}).done(employees => {
+		}).then(dataSetPromises => {
+			return when.all(dataSetPromises);
+		}).done(dataSets => {
 			this.setState({
 				page: this.page,
-				employees: employees,
+				dataSets: dataSets,
 				attributes: Object.keys(this.schema.properties),
 				pageSize: pageSize,
 				links: this.links
@@ -60,60 +60,60 @@ class App extends React.Component {
 	}
 
 	// tag::on-create[]
-	onCreate(newEmployee) {
-		follow(client, root, ['employees']).done(response => {
+	onCreate(newDataSet) {
+		follow(client, root, ['dataSets']).done(response => {
 			client({
 				method: 'POST',
 				path: response.entity._links.self.href,
-				entity: newEmployee,
+				entity: newDataSet,
 				headers: {'Content-Type': 'application/json'}
 			})
 		})
 	}
 	// end::on-create[]
 
-	onUpdate(employee, updatedEmployee) {
+	onUpdate(dataSet, updatedDataSet) {
 		client({
 			method: 'PUT',
-			path: employee.entity._links.self.href,
-			entity: updatedEmployee,
+			path: dataSet.entity._links.self.href,
+			entity: updatedDataSet,
 			headers: {
 				'Content-Type': 'application/json',
-				'If-Match': employee.headers.Etag
+				'If-Match': dataSet.headers.Etag
 			}
 		}).done(response => {
 			/* Let the websocket handler update the state */
 		}, response => {
 			if (response.status.code === 412) {
-				alert('DENIED: Unable to update ' + employee.entity._links.self.href + '. Your copy is stale.');
+				alert('DENIED: Unable to update ' + dataSet.entity._links.self.href + '. Your copy is stale.');
 			}
 		});
 	}
 
-	onDelete(employee) {
-		client({method: 'DELETE', path: employee.entity._links.self.href});
+	onDelete(dataSet) {
+		client({method: 'DELETE', path: dataSet.entity._links.self.href});
 	}
 
 	onNavigate(navUri) {
 		client({
 			method: 'GET',
 			path: navUri
-		}).then(employeeCollection => {
-			this.links = employeeCollection.entity._links;
-			this.page = employeeCollection.entity.page;
+		}).then(dataSetCollection => {
+			this.links = dataSetCollection.entity._links;
+			this.page = dataSetCollection.entity.page;
 
-			return employeeCollection.entity._embedded.employees.map(employee =>
+			return dataSetCollection.entity._embedded.dataSets.map(dataSet =>
 					client({
 						method: 'GET',
-						path: employee._links.self.href
+						path: dataSet._links.self.href
 					})
 			);
-		}).then(employeePromises => {
-			return when.all(employeePromises);
-		}).done(employees => {
+		}).then(dataSetPromises => {
+			return when.all(dataSetPromises);
+		}).done(dataSets => {
 			this.setState({
 				page: this.page,
-				employees: employees,
+				dataSets: dataSets,
 				attributes: Object.keys(this.schema.properties),
 				pageSize: this.state.pageSize,
 				links: this.links
@@ -130,7 +130,7 @@ class App extends React.Component {
 	// tag::websocket-handlers[]
 	refreshAndGoToLastPage(message) {
 		follow(client, root, [{
-			rel: 'employees',
+			rel: 'dataSets',
 			params: {size: this.state.pageSize}
 		}]).done(response => {
 			if (response.entity._links.last !== undefined) {
@@ -143,27 +143,27 @@ class App extends React.Component {
 
 	refreshCurrentPage(message) {
 		follow(client, root, [{
-			rel: 'employees',
+			rel: 'dataSets',
 			params: {
 				size: this.state.pageSize,
 				page: this.state.page.number
 			}
-		}]).then(employeeCollection => {
-			this.links = employeeCollection.entity._links;
-			this.page = employeeCollection.entity.page;
+		}]).then(dataSetCollection => {
+			this.links = dataSetCollection.entity._links;
+			this.page = dataSetCollection.entity.page;
 
-			return employeeCollection.entity._embedded.employees.map(employee => {
+			return dataSetCollection.entity._embedded.dataSets.map(dataSet => {
 				return client({
 					method: 'GET',
-					path: employee._links.self.href
+					path: dataSet._links.self.href
 				})
 			});
-		}).then(employeePromises => {
-			return when.all(employeePromises);
-		}).then(employees => {
+		}).then(dataSetPromises => {
+			return when.all(dataSetPromises);
+		}).then(dataSets => {
 			this.setState({
 				page: this.page,
-				employees: employees,
+				dataSets: dataSets,
 				attributes: Object.keys(this.schema.properties),
 				pageSize: this.state.pageSize,
 				links: this.links
@@ -176,9 +176,9 @@ class App extends React.Component {
 	componentDidMount() {
 		this.loadFromServer(this.state.pageSize);
 		stompClient.register([
-			{route: '/topic/newEmployee', callback: this.refreshAndGoToLastPage},
-			{route: '/topic/updateEmployee', callback: this.refreshCurrentPage},
-			{route: '/topic/deleteEmployee', callback: this.refreshCurrentPage}
+			{route: '/topic/newDataSet', callback: this.refreshAndGoToLastPage},
+			{route: '/topic/updateDataSet', callback: this.refreshCurrentPage},
+			{route: '/topic/deleteDataSet', callback: this.refreshCurrentPage}
 		]);
 	}
 	// end::register-handlers[]
@@ -187,8 +187,8 @@ class App extends React.Component {
 		return (
 			<div>
 				<CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
-				<EmployeeList page={this.state.page}
-							  employees={this.state.employees}
+				<DataSetList page={this.state.page}
+							  dataSets={this.state.dataSets}
 							  links={this.state.links}
 							  pageSize={this.state.pageSize}
 							  attributes={this.state.attributes}
@@ -210,11 +210,11 @@ class CreateDialog extends React.Component {
 
 	handleSubmit(e) {
 		e.preventDefault();
-		const newEmployee = {};
+		const newDataSet = {};
 		this.props.attributes.forEach(attribute => {
-			newEmployee[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
+			newDataSet[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
 		});
-		this.props.onCreate(newEmployee);
+		this.props.onCreate(newDataSet);
 		this.props.attributes.forEach(attribute => {
 			ReactDOM.findDOMNode(this.refs[attribute]).value = ''; // clear out the dialog's inputs
 		});
@@ -229,13 +229,13 @@ class CreateDialog extends React.Component {
 		);
 		return (
 			<div>
-				<a href="#createEmployee">Create</a>
+				<a href="#createDataSet">Create</a>
 
-				<div id="createEmployee" className="modalDialog">
+				<div id="createDataSet" className="modalDialog">
 					<div>
 						<a href="#" title="Close" className="close">X</a>
 
-						<h2>Create new employee</h2>
+						<h2>Create new dataSet</h2>
 
 						<form>
 							{inputs}
@@ -257,24 +257,24 @@ class UpdateDialog extends React.Component {
 
 	handleSubmit(e) {
 		e.preventDefault();
-		const updatedEmployee = {};
+		const updatedDataSet = {};
 		this.props.attributes.forEach(attribute => {
-			updatedEmployee[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
+			updatedDataSet[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
 		});
-		this.props.onUpdate(this.props.employee, updatedEmployee);
+		this.props.onUpdate(this.props.dataSet, updatedDataSet);
 		window.location = "#";
 	}
 
 	render() {
 		const inputs = this.props.attributes.map(attribute =>
-			<p key={this.props.employee.entity[attribute]}>
+			<p key={this.props.dataSet.entity[attribute]}>
 				<input type="text" placeholder={attribute}
-					   defaultValue={this.props.employee.entity[attribute]}
+					   defaultValue={this.props.dataSet.entity[attribute]}
 					   ref={attribute} className="field"/>
 			</p>
 		);
 
-		const dialogId = "updateEmployee-" + this.props.employee.entity._links.self.href;
+		const dialogId = "updateDataSet-" + this.props.dataSet.entity._links.self.href;
 
 		return (
 			<div>
@@ -284,7 +284,7 @@ class UpdateDialog extends React.Component {
 					<div>
 						<a href="#" title="Close" className="close">X</a>
 
-						<h2>Update an employee</h2>
+						<h2>Update a dataSet</h2>
 
 						<form>
 							{inputs}
@@ -298,7 +298,7 @@ class UpdateDialog extends React.Component {
 
 }
 
-class EmployeeList extends React.Component {
+class DataSetList extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -341,11 +341,11 @@ class EmployeeList extends React.Component {
 
 	render() {
 		const pageInfo = this.props.page.hasOwnProperty("number") ?
-			<h3>Employees - Page {this.props.page.number + 1} of {this.props.page.totalPages}</h3> : null;
+			<h3>dataSets - Page {this.props.page.number + 1} of {this.props.page.totalPages}</h3> : null;
 
-		const employees = this.props.employees.map(employee =>
-			<Employee key={employee.entity._links.self.href}
-					  employee={employee}
+		const dataSets = this.props.dataSets.map(dataSet =>
+			<DataSet key={dataSet.entity._links.self.href}
+					  dataSet={dataSet}
 					  attributes={this.props.attributes}
 					  onUpdate={this.props.onUpdate}
 					  onDelete={this.props.onDelete}/>
@@ -372,13 +372,13 @@ class EmployeeList extends React.Component {
 				<table>
 					<tbody>
 						<tr>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Description</th>
+							<th>Name</th>
+							<th>Age</th>
+							<th>Diagnosis</th>
 							<th></th>
 							<th></th>
 						</tr>
-						{employees}
+						{dataSets}
 					</tbody>
 				</table>
 				<div>
@@ -389,7 +389,7 @@ class EmployeeList extends React.Component {
 	}
 }
 
-class Employee extends React.Component {
+class DataSet extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -397,17 +397,17 @@ class Employee extends React.Component {
 	}
 
 	handleDelete() {
-		this.props.onDelete(this.props.employee);
+		this.props.onDelete(this.props.dataSet);
 	}
 
 	render() {
 		return (
 			<tr>
-				<td>{this.props.employee.entity.firstName}</td>
-				<td>{this.props.employee.entity.lastName}</td>
-				<td>{this.props.employee.entity.description}</td>
+				<td>{this.props.dataSet.entity.name}</td>
+				<td>{this.props.dataSet.entity.age}</td>
+				<td>{this.props.dataSet.entity.diagnosis}</td>
 				<td>
-					<UpdateDialog employee={this.props.employee}
+					<UpdateDialog dataSet={this.props.dataSet}
 								  attributes={this.props.attributes}
 								  onUpdate={this.props.onUpdate}/>
 				</td>

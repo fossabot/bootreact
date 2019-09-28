@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 // tag::code[]
 @Controller
-public class HomeController {
+public class DataSetController {
 
 	@RequestMapping(value = "/")
 	public String index() {
