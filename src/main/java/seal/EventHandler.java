@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.greglturnquist.payroll;
-
-import static com.greglturnquist.payroll.WebSocketConfiguration.*;
+package seal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
@@ -26,12 +24,14 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import static seal.WebSocketConfiguration.MESSAGE_PREFIX;
+
 /**
  * @author Greg Turnquist
  */
 // tag::code[]
 @Component
-@RepositoryEventHandler(Employee.class)
+@RepositoryEventHandler(DataSet.class)
 public class EventHandler {
 
 	private final SimpMessagingTemplate websocket;
@@ -45,31 +45,31 @@ public class EventHandler {
 	}
 
 	@HandleAfterCreate
-	public void newEmployee(Employee employee) {
+	public void newDataSet(DataSet dataSet) {
 		this.websocket.convertAndSend(
-				MESSAGE_PREFIX + "/newEmployee", getPath(employee));
+				MESSAGE_PREFIX + "/newDataSet", getPath(dataSet));
 	}
 
 	@HandleAfterDelete
-	public void deleteEmployee(Employee employee) {
+	public void deleteDataSet(DataSet dataSet) {
 		this.websocket.convertAndSend(
-				MESSAGE_PREFIX + "/deleteEmployee", getPath(employee));
+				MESSAGE_PREFIX + "/deleteDataSet", getPath(dataSet));
 	}
 
 	@HandleAfterSave
-	public void updateEmployee(Employee employee) {
+	public void updateDataSet(DataSet dataSet) {
 		this.websocket.convertAndSend(
-				MESSAGE_PREFIX + "/updateEmployee", getPath(employee));
+				MESSAGE_PREFIX + "/updateDataSet", getPath(dataSet));
 	}
 
 	/**
-	 * Take an {@link Employee} and get the URI using Spring Data REST's {@link EntityLinks}.
+	 * Take an {@link DataSet} and get the URI using Spring Data REST's {@link EntityLinks}.
 	 *
-	 * @param employee
+	 * @param dataSet
 	 */
-	private String getPath(Employee employee) {
-		return this.entityLinks.linkForSingleResource(employee.getClass(),
-				employee.getId()).toUri().getPath();
+	private String getPath(DataSet dataSet) {
+		return this.entityLinks.linkForSingleResource(dataSet.getClass(),
+				dataSet.getId()).toUri().getPath();
 	}
 
 }

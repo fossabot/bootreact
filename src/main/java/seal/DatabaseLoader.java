@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.greglturnquist.payroll;
+package seal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -26,22 +26,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseLoader implements CommandLineRunner {
 
-	private final EmployeeRepository repository;
+	private final DataSetRepository repository;
 
 	@Autowired
-	public DatabaseLoader(EmployeeRepository repository) {
+	public DatabaseLoader(DataSetRepository repository) {
 		this.repository = repository;
 	}
 
 	@Override
 	public void run(String... strings) throws Exception {
 
-		this.repository.save(new Employee("Frodo", "Baggins", "ring bearer"));
-		this.repository.save(new Employee("Bilbo", "Baggins", "burglar"));
-		this.repository.save(new Employee("Gandalf", "the Grey", "wizard"));
-		this.repository.save(new Employee("Samwise", "Gamgee", "gardener"));
-		this.repository.save(new Employee("Meriadoc", "Brandybuck", "pony rider"));
-		this.repository.save(new Employee("Peregrin", "Took", "pipe smoker"));
+		this.repository.save(new DataSet("Frodo Baggins", 33, "Testicle Cancer"));
+		this.repository.save(new DataSet("Bilbo Baggins", 44, "Testicle Cancer"));
+		this.repository.save(new DataSet("Gandalf the Grey", 55, "Testicle Cancer"));
+		this.repository.save(new DataSet("Samwise Gamgee", 22, "Testicle Cancer"));
+		this.repository.save(new DataSet("Meriadoc Brandybuck", 18, "Testicle Cancer"));
+		this.repository.save(new DataSet("Peregrin Took", 35, "Testicle Cancer"));
 	}
 }
 // end::code[]

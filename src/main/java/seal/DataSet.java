@@ -13,20 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.greglturnquist.payroll;
+package seal;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Version;
 
 /**
  * @author Greg Turnquist
  */
 // tag::code[]
-@SpringBootApplication
-public class ReactAndSpringDataRestApplication {
+@Entity
+@Data
+public class DataSet {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ReactAndSpringDataRestApplication.class, args);
+	private @Id @GeneratedValue Long id;
+	private String name;
+	private Integer age;
+	private String diagnosis;
+
+	private @Version @JsonIgnore Long version;
+
+	public DataSet(String firstName, Integer lastName, String diagnosis) {
+		this.name = firstName;
+		this.age = lastName;
+		this.diagnosis = diagnosis;
 	}
 }
 // end::code[]
