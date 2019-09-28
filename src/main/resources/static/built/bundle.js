@@ -45182,7 +45182,7 @@ function (_React$Component4) {
         ref: "pageSize",
         defaultValue: this.props.pageSize,
         onInput: this.handleInput
-      }), React.createElement("table", null, React.createElement("tbody", null, React.createElement("tr", null, React.createElement("th", null, "Name"), React.createElement("th", null, "Age"), React.createElement("th", null, "Diagnosis"), React.createElement("th", null), React.createElement("th", null)), dataSets)), React.createElement("div", null, navLinks));
+      }), React.createElement("table", null, React.createElement("tbody", null, React.createElement("tr", null, React.createElement("th", null, "Name"), React.createElement("th", null, "Age"), React.createElement("th", null, "Diagnosis"), React.createElement("th", null, "Details"), React.createElement("th", null), React.createElement("th", null)), dataSets)), React.createElement("div", null, navLinks));
     }
   }]);
 
@@ -45212,7 +45212,7 @@ function (_React$Component5) {
   }, {
     key: "render",
     value: function render() {
-      return React.createElement("tr", null, React.createElement("td", null, this.props.dataSet.entity.name), React.createElement("td", null, this.props.dataSet.entity.age), React.createElement("td", null, this.props.dataSet.entity.diagnosis), React.createElement("td", null, React.createElement(UpdateDialog, {
+      return React.createElement("tr", null, React.createElement("td", null, this.props.dataSet.entity.name), React.createElement("td", null, this.props.dataSet.entity.age), React.createElement("td", null, this.props.dataSet.entity.diagnosis), React.createElement("td", null, this.props.dataSet.entity.properties), React.createElement("td", null, React.createElement(UpdateDialog, {
         dataSet: this.props.dataSet,
         attributes: this.props.attributes,
         onUpdate: this.props.onUpdate
@@ -45330,7 +45330,7 @@ __webpack_require__(/*! stompjs */ "./node_modules/stompjs/lib/stomp.js"); // <2
 
 
 function register(registrations) {
-  var socket = SockJS('/payroll'); // <3>
+  var socket = SockJS('/analysis'); // <3>
 
   var stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {

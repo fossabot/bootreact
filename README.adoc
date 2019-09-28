@@ -29,13 +29,13 @@ The follow code is used to configure WebSocket support on the server side:
 
 [source,java]
 ----
-include::src/main/java/com/greglturnquist/payroll/WebSocketConfiguration.java[tag=code]
+include::src/main/java/com/greglturnquist/analysis/WebSocketConfiguration.java[tag=code]
 ----
 
 * `@EnableWebSocketMessageBroker` turns on WebSocket support.
 * `AbstractWebSocketMessageBrokerConfigurer` provides a convenient base class to configure basic features.
 * *MESSAGE_PREFIX* is the prefix you will prepend to every message's route.
-* `registerStompEndpoints()` is used to configure the endpoint on the backend for clients and server to link (`/payroll`).
+* `registerStompEndpoints()` is used to configure the endpoint on the backend for clients and server to link (`/analysis`).
 * `configureMessageBroker()` is used to configure the broker used to relay messages between server and client.
 
 With this configuration, it's now possible to tap into Spring Data REST events and publish them over a WebSocket.
@@ -46,7 +46,7 @@ Spring Data REST generates several https://docs.spring.io/spring-data/rest/docs/
 
 [source,java]
 ----
-include::src/main/java/com/greglturnquist/payroll/EventHandler.java[tag=code]
+include::src/main/java/com/greglturnquist/analysis/EventHandler.java[tag=code]
 ----
 
 * `@RepositoryEventHandler(Employee.class)` flags this class to trap events based on *employees*.
@@ -81,7 +81,7 @@ include::src/main/js/websocket-listener.js[]
 
 <1> You pull in the SockJS JavaScript library for talking over WebSockets.
 <2> You pull in the stomp-websocket JavaScript library to use the STOMP sub-protocol.
-<3> Here is where the WebSocket is pointed at the application's `/payroll` endpoint.
+<3> Here is where the WebSocket is pointed at the application's `/analysis` endpoint.
 <4> Iterate over the array of `registrations` supplied so each can subscribe for callback as messages arrive.
 
 Each registration entry has a `route` and a `callback`. In the next section, you can see how to register event handlers.

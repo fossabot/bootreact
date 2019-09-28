@@ -375,6 +375,7 @@ class DataSetList extends React.Component {
 							<th>Name</th>
 							<th>Age</th>
 							<th>Diagnosis</th>
+							<th>Details</th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -406,6 +407,7 @@ class DataSet extends React.Component {
 				<td>{this.props.dataSet.entity.name}</td>
 				<td>{this.props.dataSet.entity.age}</td>
 				<td>{this.props.dataSet.entity.diagnosis}</td>
+				<td>{this.props.dataSet.entity.properties}</td>
 				<td>
 					<UpdateDialog dataSet={this.props.dataSet}
 								  attributes={this.props.attributes}
