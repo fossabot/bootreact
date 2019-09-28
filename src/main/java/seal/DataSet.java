@@ -16,13 +16,13 @@
 package seal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 /**
  * @author Greg Turnquist
@@ -31,12 +31,20 @@ import javax.persistence.Version;
 @Entity
 @Data
 @NoArgsConstructor
+//@TypeDef(
+//		name = "jsonb",
+//		typeClass = JsonBinaryType.class
+//)
 public class DataSet {
 
 	private @Id @GeneratedValue Long id;
 	private String name;
 	private Integer age;
 	private String diagnosis;
+
+//	@Type(type = "jsonb")
+//	@Column(columnDefinition = "jsonb")
+//	private String properties;
 
 	private @Version @JsonIgnore Long version;
 
@@ -45,5 +53,12 @@ public class DataSet {
 		this.age = lastName;
 		this.diagnosis = diagnosis;
 	}
+
+//	public DataSet(String firstName, Integer lastName, String diagnosis, String properties) {
+//		this.name = firstName;
+//		this.age = lastName;
+//		this.diagnosis = diagnosis;
+//		this.properties = properties;
+//	}
 }
 // end::code[]

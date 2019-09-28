@@ -29,6 +29,5 @@ public class DataSetController {
 	public String index() {
 		return "index";
 	}
-
 }
 // end::code[]

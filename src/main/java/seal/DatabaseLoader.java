@@ -42,6 +42,11 @@ public class DatabaseLoader implements CommandLineRunner {
 		this.repository.save(new DataSet("Samwise Gamgee", 22, "Testicle Cancer"));
 		this.repository.save(new DataSet("Meriadoc Brandybuck", 18, "Testicle Cancer"));
 		this.repository.save(new DataSet("Peregrin Took", 35, "Testicle Cancer"));
+//		this.repository.save(new DataSet("Frodo Baggins", 32, "Testicle Cancer",
+//				"{" +
+//				"   \"sex\": \"male\"," +
+//				"   \"kids\": \"6" +
+//				"}"));
 	}
 }
 // end::code[]
