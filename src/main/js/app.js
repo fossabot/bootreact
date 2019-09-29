@@ -1,21 +1,30 @@
 'use strict';
 
+import {
+	Table, Form, Button
+} from 'react-bootstrap'
+
+import WebFont from 'webfontloader';
+
+WebFont.load({
+	google: {
+		families: ['Titillium Web:300,400,700', 'sans-serif']
+	}
+});
+
 const React = require('react');
 const ReactDOM = require('react-dom');
 const when = require('when');
 const client = require('./client');
-
 const follow = require('./follow'); // function to hop multiple links by "rel"
-
 const stompClient = require('./websocket-listener');
-
 const root = '/api';
 
 class App extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {dataSets: [], attributes: [], page: 1, pageSize: 5, links: {}};
+		this.state = {dataSets: [], attributes: [], page: 1, pageSize: 4, links: {}};
 		this.updatePageSize = this.updatePageSize.bind(this);
 		this.onCreate = this.onCreate.bind(this);
 		this.onUpdate = this.onUpdate.bind(this);
@@ -185,17 +194,19 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
-				<DataSetList page={this.state.page}
-							  dataSets={this.state.dataSets}
-							  links={this.state.links}
-							  pageSize={this.state.pageSize}
-							  attributes={this.state.attributes}
-							  onNavigate={this.onNavigate}
-							  onUpdate={this.onUpdate}
-							  onDelete={this.onDelete}
-							  updatePageSize={this.updatePageSize}/>
+			<div className="container">
+                <div>
+                    <CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
+                    <DataSetList page={this.state.page}
+                                  dataSets={this.state.dataSets}
+                                  links={this.state.links}
+                                  pageSize={this.state.pageSize}
+                                  attributes={this.state.attributes}
+                                  onNavigate={this.onNavigate}
+                                  onUpdate={this.onUpdate}
+                                  onDelete={this.onDelete}
+                                  updatePageSize={this.updatePageSize}/>
+                </div>
 			</div>
 		)
 	}
@@ -229,18 +240,18 @@ class CreateDialog extends React.Component {
 		);
 		return (
 			<div>
-				<a href="#createDataSet">Create</a>
+				<a class="btn btn-primary" href="#createDataSet">Create</a>
 
 				<div id="createDataSet" className="modalDialog">
 					<div>
-						<a href="#" title="Close" className="close">X</a>
+						<a class="btn btn-primary" href="#" title="Close" className="close">X</a>
 
 						<h2>Create new dataSet</h2>
 
-						<form>
+						<Form>
 							{inputs}
-							<button onClick={this.handleSubmit}>Create</button>
-						</form>
+							<Button onClick={this.handleSubmit}>Create</Button>
+						</Form>
 					</div>
 				</div>
 			</div>
@@ -278,18 +289,18 @@ class DetailsDialog extends React.Component {
 
 		return (
 			<div>
-				<a href={"#" + dialogId}>Details</a>
+				<a class="btn btn-primary" href={"#" + dialogId}>Details</a>
 
 				<div id={dialogId} className="modalDialog">
 					<div>
-						<a href="#" title="Close" className="close">X</a>
+						<a class="btn btn-primary" href="#" title="Close" className="close">X</a>
 
 						<h2>Update a dataSet</h2>
 
-						<form>
+						<Form>
 							{inputs}
-							<button onClick={this.handleSubmit}>Update</button>
-						</form>
+							<Button onClick={this.handleSubmit}>Update</Button>
+						</Form>
 					</div>
 				</div>
 			</div>
@@ -327,18 +338,18 @@ class UpdateDialog extends React.Component {
 
 		return (
 			<div>
-				<a href={"#" + dialogId}>Update</a>
+				<a class="btn btn-primary" href={"#" + dialogId}>Update</a>
 
 				<div id={dialogId} className="modalDialog">
 					<div>
-						<a href="#" title="Close" className="close">X</a>
+						<a class="btn btn-primary" href="#" title="Close" className="close">X</a>
 
 						<h2>Update a dataSet</h2>
 
-						<form>
+						<Form>
 							{inputs}
-							<button onClick={this.handleSubmit}>Update</button>
-						</form>
+							<Button onClick={this.handleSubmit}>Update</Button>
+						</Form>
 					</div>
 				</div>
 			</div>
@@ -401,35 +412,33 @@ class DataSetList extends React.Component {
 
 		const navLinks = [];
 		if ("first" in this.props.links) {
-			navLinks.push(<button key="first" onClick={this.handleNavFirst}>&lt;&lt;</button>);
+			navLinks.push(<Button key="first" onClick={this.handleNavFirst}>&lt;&lt;</Button>);
 		}
 		if ("prev" in this.props.links) {
-			navLinks.push(<button key="prev" onClick={this.handleNavPrev}>&lt;</button>);
+			navLinks.push(<Button key="prev" onClick={this.handleNavPrev}>&lt;</Button>);
 		}
 		if ("next" in this.props.links) {
-			navLinks.push(<button key="next" onClick={this.handleNavNext}>&gt;</button>);
+			navLinks.push(<Button key="next" onClick={this.handleNavNext}>&gt;</Button>);
 		}
 		if ("last" in this.props.links) {
-			navLinks.push(<button key="last" onClick={this.handleNavLast}>&gt;&gt;</button>);
+			navLinks.push(<Button key="last" onClick={this.handleNavLast}>&gt;&gt;</Button>);
 		}
 
 		return (
 			<div>
 				{pageInfo}
 				<input ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
-				<table>
+				<Table striped>
 					<tbody>
 						<tr>
 							<th>Name</th>
 							<th>Age</th>
 							<th>Diagnosis</th>
-							<th>Details</th>
-							<th></th>
-							<th></th>
+							<th colSpan={2}>Actions</th>
 						</tr>
 						{dataSets}
 					</tbody>
-				</table>
+				</Table>
 				<div>
 					{navLinks}
 				</div>
@@ -461,12 +470,7 @@ class DataSet extends React.Component {
 								  onUpdate={this.props.onUpdate}/>
 				</td>
 				<td>
-					<UpdateDialog dataSet={this.props.dataSet}
-								  attributes={this.props.attributes}
-								  onUpdate={this.props.onUpdate}/>
-				</td>
-				<td>
-					<button onClick={this.handleDelete}>Delete</button>
+					<Button onClick={this.handleDelete}>Delete</Button>
 				</td>
 			</tr>
 		)
