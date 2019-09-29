@@ -15,7 +15,7 @@ class App extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {dataSets: [], attributes: [], page: 1, pageSize: 5, links: {}};
+		this.state = {dataSets: [], attributes: [], page: 1, pageSize: 10, links: {}};
 		this.updatePageSize = this.updatePageSize.bind(this);
 		this.onCreate = this.onCreate.bind(this);
 		this.onUpdate = this.onUpdate.bind(this);
@@ -240,6 +240,7 @@ class CreateDialog extends React.Component {
 						<form>
 							{inputs}
 							<button onClick={this.handleSubmit}>Create</button>
+							<button onClick={this.addProperty}>Add property</button>
 						</form>
 					</div>
 				</div>
@@ -252,29 +253,14 @@ class DetailsDialog extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-
-	handleSubmit(e) {
-		e.preventDefault();
-		const updatedDataSet = {};
-		this.props.attributes.forEach(attribute => {
-			updatedDataSet[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
-		});
-		this.props.onUpdate(this.props.dataSet, updatedDataSet);
-		window.location = "#";
 	}
 
 	render() {
-		const inputs = this.props.attributes.map(attribute =>
-			<p key={this.props.dataSet.entity[attribute]}>
-				<input type="text" placeholder={attribute}
-					   defaultValue={this.props.dataSet.entity[attribute]}
-					   ref={attribute} className="field"/>
-			</p>
+		const details = this.props.attributes.map(attribute =>
+				<p>{this.props.dataSet.entity[attribute]}</p>
 		);
 
-		const dialogId = "updateDataSet-" + this.props.dataSet.entity._links.self.href;
+		const dialogId = "detailsDataSet-" + this.props.dataSet.entity._links.self.href;
 
 		return (
 			<div>
@@ -284,12 +270,9 @@ class DetailsDialog extends React.Component {
 					<div>
 						<a href="#" title="Close" className="close">X</a>
 
-						<h2>Update a dataSet</h2>
+						<h2>Details of the dataSet</h2>
 
-						<form>
-							{inputs}
-							<button onClick={this.handleSubmit}>Update</button>
-						</form>
+						{details}
 					</div>
 				</div>
 			</div>
@@ -456,7 +439,7 @@ class DataSet extends React.Component {
 				<td>{this.props.dataSet.entity.age}</td>
 				<td>{this.props.dataSet.entity.diagnosis}</td>
 				<td>
-					<UpdateDialog dataSet={this.props.dataSet}
+					<DetailsDialog dataSet={this.props.dataSet}
 								  attributes={this.props.attributes}
 								  onUpdate={this.props.onUpdate}/>
 				</td>
