@@ -1,1 +1,3 @@
+image:https://travis-ci.org/superseacat/bootreact.svg?branch=master["Build Status", link="https://travis-ci.org/superseacat/bootreact"]
+
 the application lives at: http://analysis-app.eu-north-1.elasticbeanstalk.com/[http://analysis-app.aws.com]
