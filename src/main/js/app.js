@@ -6,6 +6,7 @@ import {
 
 import WebFont from 'webfontloader';
 
+//todo activate font
 WebFont.load({
 	google: {
 		families: ['Titillium Web:300,400,700', 'sans-serif']
@@ -240,11 +241,11 @@ class CreateDialog extends React.Component {
 		);
 		return (
 			<div>
-				<a class="btn btn-primary" href="#createDataSet">Create</a>
+				<a className="btn btn-primary" href="#createDataSet">Create</a>
 
 				<div id="createDataSet" className="modalDialog">
 					<div>
-						<a class="btn btn-primary" href="#" title="Close" className="close">X</a>
+						<a className="btn btn-primary" href="#" title="Close" className="close">X</a>
 
 						<h2>Create new dataSet</h2>
 
@@ -289,11 +290,11 @@ class DetailsDialog extends React.Component {
 
 		return (
 			<div>
-				<a class="btn btn-primary" href={"#" + dialogId}>Details</a>
+				<a className="btn btn-primary" href={"#" + dialogId}>Details</a>
 
 				<div id={dialogId} className="modalDialog">
 					<div>
-						<a class="btn btn-primary" href="#" title="Close" className="close">X</a>
+						<a className="btn btn-primary" href="#" title="Close" className="close">X</a>
 
 						<h2>Update a dataSet</h2>
 
@@ -338,11 +339,11 @@ class UpdateDialog extends React.Component {
 
 		return (
 			<div>
-				<a class="btn btn-primary" href={"#" + dialogId}>Update</a>
+				<a className="btn btn-primary" href={"#" + dialogId}>Update</a>
 
 				<div id={dialogId} className="modalDialog">
 					<div>
-						<a class="btn btn-primary" href="#" title="Close" className="close">X</a>
+						<a className="btn btn-primary" href="#" title="Close" className="close">X</a>
 
 						<h2>Update a dataSet</h2>
 
@@ -400,7 +401,9 @@ class DataSetList extends React.Component {
 
 	render() {
 		const pageInfo = this.props.page.hasOwnProperty("number") ?
-			<h3>dataSets - Page {this.props.page.number + 1} of {this.props.page.totalPages}</h3> : null;
+			<h3>dataSets - displaying page {this.props.page.number + 1} of {this.props.page.totalPages}
+			    , showing <input ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/> per page
+            </h3> : null;
 
 		const dataSets = this.props.dataSets.map(dataSet =>
 			<DataSet key={dataSet.entity._links.self.href}
@@ -427,7 +430,6 @@ class DataSetList extends React.Component {
 		return (
 			<div>
 				{pageInfo}
-				<input ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
 				<Table striped>
 					<tbody>
 						<tr>

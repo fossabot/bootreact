@@ -1,5 +1,5 @@
 input.field {
-    width: 90%;
+    width: 50%;
 }
 
 table {
@@ -21,9 +21,9 @@ td, th {
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     z-index: 99999;
-    opacity:0;
+    opacity: 0;
     -webkit-transition: opacity 400ms ease-in;
     -moz-transition: opacity 400ms ease-in;
     transition: opacity 400ms ease-in;
@@ -31,7 +31,7 @@ td, th {
 }
 
 .modalDialog:target {
-    opacity:1;
+    opacity: 1;
     pointer-events: auto;
 }
 
@@ -66,4 +66,10 @@ td, th {
     box-shadow: 1px 1px 3px #000;
 }
 
-.close:hover { background: #00d9ff; }
+.close:hover {
+    background: #00d9ff;
+}
+
+.component {
+    padding-top: 15px !important;
+}
