@@ -1,0 +1,10 @@
+language: java
+jdk: oraclejdk11
+install: true
+script: 
+- AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" AWS_SECRET_KEY="$AWS_SECRET_KEY" mvn clean install -q beanstalk:upload-source-bundle beanstalk:create-application-version beanstalk:update-environment
+cache:
+  directories:
+  - .autoconf
+  - $HOME/.m2
+  - $HOME/.m3
