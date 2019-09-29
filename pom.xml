@@ -85,12 +85,12 @@
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-core</artifactId>
-			<version>2.2.11</version>
+			<version>2.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
-			<version>2.2.11</version>
+			<version>2.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
@@ -161,8 +161,8 @@
 				<artifactId>beanstalk-maven-plugin</artifactId>
 				<version>1.5.4</version>
 				<configuration>
-					<s3Bucket>my-application-bucket-live</s3Bucket>
-					<s3Key>${project.artifactId}/${project.build.finalName}-${maven.build.timestamp}.jar</s3Key>
+					<s3Bucket>elasticbeanstalk-eu-north-1-030656456435</s3Bucket>
+					<s3Key>${project.build.finalName}-${maven.build.timestamp}.jar</s3Key>
 					<applicationName>bcp</applicationName>
 					<environmentName>bcp-ass</environmentName>
 					<environmentRef>e-emq9chzbjy</environmentRef>
