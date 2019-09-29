@@ -15,7 +15,7 @@ class App extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {dataSets: [], attributes: [], page: 1, pageSize: 2, links: {}};
+		this.state = {dataSets: [], attributes: [], page: 1, pageSize: 5, links: {}};
 		this.updatePageSize = this.updatePageSize.bind(this);
 		this.onCreate = this.onCreate.bind(this);
 		this.onUpdate = this.onUpdate.bind(this);
@@ -248,6 +248,55 @@ class CreateDialog extends React.Component {
 	}
 }
 
+class DetailsDialog extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	handleSubmit(e) {
+		e.preventDefault();
+		const updatedDataSet = {};
+		this.props.attributes.forEach(attribute => {
+			updatedDataSet[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
+		});
+		this.props.onUpdate(this.props.dataSet, updatedDataSet);
+		window.location = "#";
+	}
+
+	render() {
+		const inputs = this.props.attributes.map(attribute =>
+			<p key={this.props.dataSet.entity[attribute]}>
+				<input type="text" placeholder={attribute}
+					   defaultValue={this.props.dataSet.entity[attribute]}
+					   ref={attribute} className="field"/>
+			</p>
+		);
+
+		const dialogId = "updateDataSet-" + this.props.dataSet.entity._links.self.href;
+
+		return (
+			<div>
+				<a href={"#" + dialogId}>Details</a>
+
+				<div id={dialogId} className="modalDialog">
+					<div>
+						<a href="#" title="Close" className="close">X</a>
+
+						<h2>Update a dataSet</h2>
+
+						<form>
+							{inputs}
+							<button onClick={this.handleSubmit}>Update</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		)
+	}
+}
+
 class UpdateDialog extends React.Component {
 
 	constructor(props) {
@@ -295,7 +344,6 @@ class UpdateDialog extends React.Component {
 			</div>
 		)
 	}
-
 }
 
 class DataSetList extends React.Component {
@@ -407,7 +455,11 @@ class DataSet extends React.Component {
 				<td>{this.props.dataSet.entity.name}</td>
 				<td>{this.props.dataSet.entity.age}</td>
 				<td>{this.props.dataSet.entity.diagnosis}</td>
-				<td>{this.props.dataSet.entity.properties}</td>
+				<td>
+					<UpdateDialog dataSet={this.props.dataSet}
+								  attributes={this.props.attributes}
+								  onUpdate={this.props.onUpdate}/>
+				</td>
 				<td>
 					<UpdateDialog dataSet={this.props.dataSet}
 								  attributes={this.props.attributes}

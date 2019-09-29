@@ -49,7 +49,7 @@ Spring Data REST generates several https://docs.spring.io/spring-data/rest/docs/
 include::src/main/java/com/greglturnquist/analysis/EventHandler.java[tag=code]
 ----
 
-* `@RepositoryEventHandler(Employee.class)` flags this class to trap events based on *employees*.
+* `@RepositoryEventHandler(DataSet.class)` flags this class to trap events based on *dataSets*.
 * `SimpMessagingTemplate` and `EntityLinks` are autowired from the application context.
 * The `@HandleXYZ` annotations flag the methods that need to listen to. These methods must be public.
 
@@ -95,11 +95,11 @@ In React, a component's `componentDidMount()` is the function that gets called a
 include::src/main/js/app.js[tag=register-handlers]
 ----
 
-The first line is the same as before, where all the employees are fetched from the server using page size. The second line shows an array of JavaScript objects being registered for WebSocket events, each with a `route` and a `callback`.
+The first line is the same as before, where all the dataSets are fetched from the server using page size. The second line shows an array of JavaScript objects being registered for WebSocket events, each with a `route` and a `callback`.
 
-When a new employee is created, the behavior is to refresh the data set and then use the paging links to navigate to the *last* page. Why refresh the data before navigating to the end? It's possible that adding a new record causes a new page to get created. While it's possible to calculate if this will happen, it subverts the point of hypermedia. Instead of cobbling together customize page counts, it's better to use existing links and only go down that road if there is a performance-driving reason to do so.
+When a new dataSet is created, the behavior is to refresh the data set and then use the paging links to navigate to the *last* page. Why refresh the data before navigating to the end? It's possible that adding a new record causes a new page to get created. While it's possible to calculate if this will happen, it subverts the point of hypermedia. Instead of cobbling together customize page counts, it's better to use existing links and only go down that road if there is a performance-driving reason to do so.
 
-When an employee is updated or deleted, the behavior is to refresh the current page. When you update a record, it impacts the page your are viewing. When you delete a record on the current page, a record from the next page will get pulled into the current one, hence the need to also refresh the current page.
+When an dataSet is updated or deleted, the behavior is to refresh the current page. When you update a record, it impacts the page your are viewing. When you delete a record on the current page, a record from the next page will get pulled into the current one, hence the need to also refresh the current page.
 
 NOTE: There is no requirement for these WebSocket messages to start with `/topic`. It is simply a common convention that indicates pub-sub semantics.
 
@@ -114,7 +114,7 @@ The following chunk of code contains the two callbacks used to update UI state w
 include::src/main/js/app.js[tag=websocket-handlers]
 ----
 
-`refreshAndGoToLastPage()` uses the familiar `follow()` function to navigate to the *employees* link with the *size* parameter applied, plugging in `this.state.pageSize`. When the response is received, you then invoke the same `onNavigate()` function from the last section, and jump to the *last* page, the one where the new record will be found.
+`refreshAndGoToLastPage()` uses the familiar `follow()` function to navigate to the *dataSets* link with the *size* parameter applied, plugging in `this.state.pageSize`. When the response is received, you then invoke the same `onNavigate()` function from the last section, and jump to the *last* page, the one where the new record will be found.
 
 `refreshCurrentPage()` also uses the `follow()` function but applies `this.state.pageSize` to *size* and `this.state.page.number` to *page*. This fetches the same page you are currently looking at and updates the state accordingly.
 
@@ -133,7 +133,7 @@ The follow chunk of code shows the same `onCreate()` function as the previous se
 include::src/main/js/app.js[tag=on-create]
 ----
 
-Here, the `follow()` function is used to get to the *employees* link, and then the *POST* operation is applied. Notice how `client({method: 'GET' ...})` has no `then()` or `done()` like before? The event handler to listen for updates is now found in `refreshAndGoToLastPage()` which you just looked at.
+Here, the `follow()` function is used to get to the *dataSets* link, and then the *POST* operation is applied. Notice how `client({method: 'GET' ...})` has no `then()` or `done()` like before? The event handler to listen for updates is now found in `refreshAndGoToLastPage()` which you just looked at.
 
 == Putting it all together
 
@@ -147,7 +147,7 @@ In this section:
 
 * You configured Spring's WebSocket suport with SockJS fallback.
 * You subscribed for create, update, and delete events from Spring Data REST to dynamically update the UI.
-* You published the URI of affected REST resources along with a contextual message ("/topic/newEmployee", "/topic/updateEmployee", etc.).
+* You published the URI of affected REST resources along with a contextual message ("/topic/newDataSet", "/topic/updateDataSet", etc.).
 * You registered WebSocket listeners in the UI to listen for these events.
 * You wired the listeners to handlers to update the UI state.
 
