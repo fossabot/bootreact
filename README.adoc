@@ -4,4 +4,35 @@ image:https://snyk.io//test/github/superseacat/bootreact/badge.svg?targetFile=pa
 
 image:https://snyk.io//test/github/superseacat/bootreact/badge.svg?targetFile=pom.xml["Known Vulnerabilities", link="https://snyk.io//test/github/superseacat/bootreact?targetFile=pom.xml"]
 
-the application lives at: http://analysis-app.eu-north-1.elasticbeanstalk.com/[http://analysis-app.aws.com]
+== Build
+
+to run locally (JDK 8+ & Apache Maven required). add DB password to `spring.datasource.password=` (or further change the DB settings) at: link:/src/main/resources/application.properties[application.properties], then
+
+....
+mvn clean install
+java -jar target/react-and-spring-data-rest-events-0.0.1-SNAPSHOT.jar
+....
+
+and go to http://localhost:8080[localhost:8080]
+
+to check the application online, visit AWS: http://analysis-app.eu-north-1.elasticbeanstalk.com/[http://analysis-app.aws.com]
+
+== ToDos
+
+- [.line-through]#add app skeleton#
+- [.line-through]#update back-end data model to `DataSet`#
+- [.line-through]#simplify data model with lombok#
+- [.line-through]#simplify project back-end structure#
+- [.line-through]#rename REST endpoints everywhere#
+- [.line-through]#add sample (failing) integration test#
+- [.line-through]#configure app to work with Postgre (AWS RDS)#
+- [.line-through]#configure the JOSNB Postgre feature#
+- [.line-through]#add bootstrap#
+- [.line-through]#configure deployment to AWS BeansTalk with Travis#
+- [.line-through]#plugin dependencies security analysis tool (Snyk)#
+- add test for the used REST endpoints
+- add input validation on back-end side
+- improve react app structure (cut at least into modules)
+- draw tests for react components
+- improve front-end functionality
+- add coverage exposure tool
