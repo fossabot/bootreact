@@ -1,3 +1,7 @@
 image:https://travis-ci.org/superseacat/bootreact.svg?branch=master["Build Status", link="https://travis-ci.org/superseacat/bootreact"]
 
+image:https://snyk.io//test/github/superseacat/bootreact/badge.svg?targetFile=package.json["Known Vulnerabilities", link="https://snyk.io//test/github/superseacat/bootreact?targetFile=package.json"]
+
+image:https://snyk.io//test/github/superseacat/bootreact/badge.svg?targetFile=pom.xml["Known Vulnerabilities", link="https://snyk.io//test/github/superseacat/bootreact?targetFile=pom.xml"]
+
 the application lives at: http://analysis-app.eu-north-1.elasticbeanstalk.com/[http://analysis-app.aws.com]
