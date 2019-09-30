@@ -1,50 +1,70 @@
 package seal;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = {DataSetController.class})
-@WebMvcTest
 public class DataSetControllerTest {
 
     @Autowired
-    private MockMvc mvc;
-
-    @MockBean
-    private DataSetRepository service;
-
-//    todo: sorting, pagination, ...
+    private MockMvc mockMvc;
 
     @Test
-    public void givenDataSets_whenFindAllDataSets_thenReturnJsonArray() throws Exception {
+    public void testGetAllDataSets_works() throws Exception {
 
-        DataSet validDataSet = new DataSet("Frodo Baggins", 33, "Testicle Cancer");
-
-        List<DataSet> allDataSets = Arrays.asList(validDataSet);
-
-        given(service.findAll()).willReturn(allDataSets);
-
-        mvc.perform(get("/api/dataSets")
+        mockMvc.perform(get("/api/dataSets", 1L)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is(validDataSet.getName())));
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetDataSetEndpoint_works() throws Exception {
+
+        mockMvc.perform(get("/api/dataSets", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCreateDataSetEndpoint_works() throws Exception {
+
+        mockMvc.perform(post("/api/dataSets", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCreateDataSetEndpoint_withJSONB_works() throws Exception {
+
+        mockMvc.perform(post("/api/dataSets", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdateDataSetEndpoint_withJSONB_works() throws Exception {
+
+        mockMvc.perform(put("/api/dataSets", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteDataSetEndpoint_works() throws Exception {
+
+        mockMvc.perform(delete("/api/dataSets", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
