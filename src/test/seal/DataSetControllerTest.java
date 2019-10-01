@@ -32,13 +32,13 @@ public class DataSetControllerTest extends DataSetTestHelper{
     }
 
     @Test
-    public void testGetDataSetEndpoint_works() throws Exception {
+    public void testGetDataSetEndpoint_withValidDataSetId_works() throws Exception {
 
-        String validName = "Frodo Baggins";
-        String validAge = "33";
+        String validName = "Gandalf the Grey";
+        String validAge = "55";
         String validDiagnosis = "Testicle Cancer";
 
-        mockMvc.perform(get("/api/dataSets/{id}", 1L)
+        mockMvc.perform(get("/api/dataSets/{id}", 3L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(validName))
@@ -47,7 +47,15 @@ public class DataSetControllerTest extends DataSetTestHelper{
     }
 
     @Test
-    public void testCreateDataSetEndpoint_works() throws Exception {
+    public void testGetDataSetEndpoint_withInvalidDataSetId_fails() throws Exception {
+
+        mockMvc.perform(get("/api/dataSets/{id}", 123127)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testCreateDataSetEndpoint_withValidDataSet_works() throws Exception {
 
         DataSet validDataSet = new DataSet("Peregrin Tester", 35, "Testicle Cancer");
 
@@ -62,19 +70,13 @@ public class DataSetControllerTest extends DataSetTestHelper{
     }
 
     @Test
-    public void testUpdateDataSetEndpoint_works() throws Exception {
+    public void testCreateDataSetEndpoint_withEmptyPayload_fails() throws Exception {
 
-        DataSet validDataSet = new DataSet("Frodo Baggins", 33, "Lungs Cancer");
-        validDataSet.setId(1L);
-
-        mockMvc.perform(put("/api/dataSets/{id}", 1)
-                .content(asJsonString(validDataSet))
+        mockMvc.perform(post("/api/dataSets")
+                .content("")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(validDataSet.getName()))
-                .andExpect(jsonPath("$.age").value(validDataSet.getAge()))
-                .andExpect(jsonPath("$.diagnosis").value(validDataSet.getDiagnosis()));
+                .accept(MediaType.ALL))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -95,6 +97,38 @@ public class DataSetControllerTest extends DataSetTestHelper{
                 .andExpect(jsonPath("$.age").value(validDataSet.getAge()))
                 .andExpect(jsonPath("$.diagnosis").value(validDataSet.getDiagnosis()))
                 .andExpect(jsonPath("$.properties").value(validDataSet.getProperties()));
+    }
+
+    @Test
+    public void testUpdateDataSetEndpoint_withExistantantDataSet_works() throws Exception {
+
+        DataSet validDataSet = new DataSet("Frodo Baggins", 33, "Lungs Cancer");
+        validDataSet.setId(1L);
+
+        mockMvc.perform(put("/api/dataSets/{id}", 1)
+                .content(asJsonString(validDataSet))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(validDataSet.getName()))
+                .andExpect(jsonPath("$.age").value(validDataSet.getAge()))
+                .andExpect(jsonPath("$.diagnosis").value(validDataSet.getDiagnosis()));
+    }
+
+    @Test
+    public void testUpdateDataSetEndpoint_withNonExistantDataSet_createsNew() throws Exception {
+
+        DataSet validDataSet = new DataSet("Frodo Baggins", 33, "Lungs Cancer");
+        validDataSet.setId(142L);
+
+        mockMvc.perform(put("/api/dataSets/{id}", 142)
+                .content(asJsonString(validDataSet))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value(validDataSet.getName()))
+                .andExpect(jsonPath("$.age").value(validDataSet.getAge()))
+                .andExpect(jsonPath("$.diagnosis").value(validDataSet.getDiagnosis()));
     }
 
     @Test

@@ -24,6 +24,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 /**
  * @author Greg Turnquist
@@ -39,8 +40,20 @@ import javax.persistence.*;
 public class DataSet {
 
 	private @Id @GeneratedValue Long id;
+
+    @NotBlank(message = "Name is mandatory")
+
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 2, max = 200)
 	private String name;
+
+    @NotNull(message = "Age is mandatory")
+    @Min(value = 0, message = "Age can not be less than 0")
+    @Max(value = 150, message = "Age should not be greater than 150")
 	private Integer age;
+
+    @NotBlank(message = "Diagnosis is mandatory")
+    @Size(min = 5, max = 500)
 	private String diagnosis;
 
 	@Type(type = "jsonb")

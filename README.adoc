@@ -30,14 +30,18 @@ to check the application online, visit AWS: http://analysis-app.eu-north-1.elast
 * [x] add bootstrap
 * [x] configure deployment to AWS BeansTalk with Travis
 * [x] plugin dependencies security analysis tool (Snyk)
-* [ ] add test for the used REST endpoints
+* [x] add test for the used REST endpoints
 * [ ] incorporate IT testing into deployment pipeline
-* [ ] add input validation on back-end side
+* [x] add input validation on back-end side
+* [ ] add input validation on endpoint side
+* [ ] add proper endpoint error handling
 * [ ] improve react app structure (cut at least into modules)
 * [ ] draw tests for react components
 * [ ] incorporate UI testing into deployment pipeline
 * [ ] improve front-end functionality
+* [ ] add JPA tests
 * [ ] add Spring REST Docs to the project
 * [ ] add coverage exposure tool
 * [ ] check the licenses compatibility
 * [ ] adventure (custom fields to the `DataSet`
+* [ ] cloudformate deployment
