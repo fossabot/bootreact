@@ -31,7 +31,7 @@ to check the application online, visit AWS: http://analysis-app.eu-north-1.elast
 * [x] configure deployment to AWS BeansTalk with Travis
 * [x] plugin dependencies security analysis tool (Snyk)
 * [x] add test for the used REST endpoints
-* [ ] incorporate IT testing into deployment pipeline
+* [x] incorporate IT testing into deployment pipeline
 * [x] add input validation on back-end side
 * [ ] add input validation on endpoint side
 * [ ] add proper endpoint error handling

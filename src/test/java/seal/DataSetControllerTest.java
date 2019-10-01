@@ -15,9 +15,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 //todo narrow down the context for mvc tests
-@SpringBootTest
+@SpringBootTest()
 @AutoConfigureMockMvc
-public class DataSetControllerTest extends DataSetTestHelper{
+public class DataSetControllerTest extends DataSetTestHelper {
 
     @Autowired
     private MockMvc mockMvc;
