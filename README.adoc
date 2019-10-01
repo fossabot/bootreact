@@ -35,7 +35,7 @@ to check the application online, visit AWS: http://analysis-app.eu-north-1.elast
 * [x] add input validation on back-end side
 * [ ] add input validation on endpoint side
 * [ ] add proper endpoint error handling
-* [ ] improve react app structure (cut at least into modules)
+* [x] improve react app structure (cut at least into components)
 * [ ] draw tests for react components
 * [ ] incorporate UI testing into deployment pipeline
 * [ ] improve front-end functionality
