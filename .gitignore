@@ -1,5 +1,6 @@
 /.idea
 /target
 /node_modules
+/src/main/resources/static/
 /package-lock.json
 /src/main/resources/application.properties

@@ -17,6 +17,7 @@ package seal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -48,15 +49,15 @@ public class DataSet {
 
 	private @Version @JsonIgnore Long version;
 
-	public DataSet(String firstName, Integer lastName, String diagnosis) {
-		this.name = firstName;
-		this.age = lastName;
+	public DataSet(String name, Integer age, String diagnosis) {
+		this.name = name;
+		this.age = age;
 		this.diagnosis = diagnosis;
 	}
 
-	public DataSet(String firstName, Integer lastName, String diagnosis, String properties) {
-		this.name = firstName;
-		this.age = lastName;
+	public DataSet(String name, Integer age, String diagnosis, String properties) {
+		this.name = name;
+		this.age = age;
 		this.diagnosis = diagnosis;
 		this.properties = properties;
 	}
