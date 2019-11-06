@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fsuperseacat%2Fbootreact.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fsuperseacat%2Fbootreact?ref=badge_shield)
+
 image:https://travis-ci.org/superseacat/bootreact.svg?branch=master["Build Status", link="https://travis-ci.org/superseacat/bootreact"]
 
 image:https://snyk.io//test/github/superseacat/bootreact/badge.svg?targetFile=package.json["Known Vulnerabilities", link="https://snyk.io//test/github/superseacat/bootreact?targetFile=package.json"]
@@ -45,3 +47,7 @@ to check the application online, visit AWS: http://analysis-app.eu-north-1.elast
 * [ ] check the licenses compatibility
 * [ ] adventure (custom fields to the `DataSet`
 * [ ] cloudformate deployment
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fsuperseacat%2Fbootreact.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fsuperseacat%2Fbootreact?ref=badge_large)
